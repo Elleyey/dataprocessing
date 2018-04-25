@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html>
+  <body>
+    <canvas id="myCanvas" width="1000" height="500"></canvas>
+    <script>
+      // get data from knmidata text file, sent out request
+      var knmi = "knmidata.txt";
+      var dataFile = new XMLHttpRequest();
+
+      // check for status file
+      dataFile.onreadystatechange = function()
+      {
+        if (this.readyState === 4 && this.status === 200)
+        {
+          // call function on gotten data
+          graph(this.responseText)
+        }
+      }
+      dataFile.open("GET", knmi, true);
+      dataFile.send();
+
+      function graph(rawData)
+      {
+        // split the data when entering a new line
+        var dataArray = rawData.split("\n");
+
+        // make lists so data can be added
+        var dates = [];
+        var temperature = [];
+
+        // iterate over every string in the array
+        for (var i = 0; i < dataArray.length - 1; i++)
+        {
+          // split if comma
+          dataArray[i] = dataArray[i].split(",");
+
+          // set variables for i
+          var year = dataArray[i][1].substring(0, 4);
+          var month = dataArray[i][1].substring(4, 6);
+          var day = dataArray[i][1].substring(6, 8);
+
+          // add variables to list, set date to javaScript date
+          var date = new Date(year, month, day);
+          dates.push(date);
+
+          var temp = dataArray[i][2];
+          temperature.push(temp);
+        }
+
+        // make the canvas
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+
+        // set domain, range, length, temperature variables
+        var ctxDomain = [100, 900];
+        var ctxRange = [50, 450];
+        var ctxLength = [800];
+        var temperatureMin = Math.min.apply(Math, temperature);
+        var temperatureMax = Math.max.apply(Math, temperature);
+        var temperatureDomain = [temperatureMin, temperatureMax];
+
+        // color rectangle in, set at position
+        ctx.fillStyle = 'rgb(255,105,180)';
+        ctx.fillRect(0, 0, 1000, 500);
+
+        // set title
+        ctx.font = "Bold 21px Calibri";
+        ctx.fillStyle = "rgb(253,245,230)";
+        ctx.textAlign = "center";
+        ctx.fillText("Average temperature in De Bilt, Netherlands, 2017", 500, 40);
+
+        // set x and y axis
+        ctx.beginPath();
+        ctx.moveTo(ctxDomain[0], ctxRange[0]);
+        ctx.moveTo(ctxDomain[0], ctxRange[0]);
+        ctx.lineTo(ctxDomain[0], ctxRange[1]);
+        ctx.lineTo(ctxDomain[1], ctxRange[1]);
+        ctx.stroke();
+
+        // set months as texts
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
+        "Sep", "Oct", "Nov", "Dec"]
+        var yMonth = 475;
+        var paddingMonth = ctxLength / months.length;
+
+        // iterate over months and place in graph
+        for (var m = 0; m < months.length; m++)
+        {
+          var month = months[m];
+          var xMonth = ctxDomain[0] + 35 + (paddingMonth * m);
+          ctx.fillStyle = "pink";
+          ctx.textAlign = "center";
+          ctx.fillText(month, xMonth, yMonth);
+        }
+
+        // set temperature on y axis
+        var tempMax = Math.round(temperatureMax / 10);
+        var tempa = Math.round(temperatureMin / 10);
+        var tempRange = [];
+        var paddingTemp = 14.2;
+        var xTempera = ctxDomain[0] - 15;
+
+        // set all temperatures
+        do
+        {
+          tempa++;
+          tempRange.push(tempa);
+        }
+        while (tempa < tempMax);
+
+        // iterate over temperatures and add in graph
+        for (var t = 0; t < tempRange.length; t++)
+        {
+          var tempera = tempRange[t];
+          var yTempera = ctxRange[1] - (paddingTemp * t);
+          ctx.font = "18px Calibri";
+          ctx.fillStyle = "pink";
+          ctx.textAlign = "center";
+          ctx.fillText(tempera, xTempera, yTempera);
+        }
+
+        // show info about measurements
+        ctx.font = "16px Calibri";
+        ctx.fillStyle = "pink";
+        ctx.textAlign = "center";
+        ctx.fillText("celsius degrees", xTempera, 43);
+
+        // set starting point on graph
+        var point = createTransform(temperatureDomain, [450, 50]);
+        ctx.beginPath();
+        var spaceBetweenPoints = ctxLength / dates.length;
+        var k = 100;
+        ctx.moveTo(k, point(temperature[0]));
+
+        // iterate over points and connect
+        for (var j = 0; j < 365; j++)
+        {
+          k += spaceBetweenPoints;
+          ctx.lineTo(k, point(temperature[j]));
+          ctx.stroke();
+        }
+
+        // ad my details
+        ctx.font = "Bold 11px Calibri";
+        ctx.fillStyle = "rgb(255,239,213)";
+        ctx.textAlign = "center";
+        ctx.fillText("By E. Donner, Assignment JavaScript, source: KNMI.", 770, 492);
+
+        // given function used to createTransform
+        function createTransform(domain, range)
+        {
+        	// domain is a two-element array of the data bounds [domain_min, domain_max]
+        	// range is a two-element array of the screen bounds [range_min, range_max]
+        	// this gives you two equations to solve:
+        	// range_min = alpha * domain_min + beta
+        	// range_max = alpha * domain_max + beta
+            var domain_min = domain[0]
+            var domain_max = domain[1]
+            var range_min = range[0]
+            var range_max = range[1]
+
+            // formulas to calculate the alpha and the beta
+           	var alpha = (range_max - range_min) / (domain_max - domain_min)
+            var beta = range_max - alpha * domain_max
+
+            // returns the function for the linear transformation (y= a * x + b)
+            return function(x)
+            {
+              return alpha * x + beta;
+            }
+          }
+        }
+    </script>
+</body>
+</html>
