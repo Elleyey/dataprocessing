@@ -1,0 +1,9 @@
+open Git Bash here
+
+git add --all
+
+
+git commit -m "hier je commit message"
+
+
+git push

@@ -2,12 +2,21 @@ import csv
 import json
 import sys
 
-# first try to get the data i need rom obesity.csv from the WHO
-# which is obesity % from both sexes
+array = []
+counter = 0
 
 with open('obesitylim.csv', 'r') as csvObesity:
     csvObesityReader = csv.reader(csvObesity)
+    for row in csvObesityReader:
+        counter = counter + 1
+        if counter > 4:
+            data = dict()
+            data["Country"] = row[0]
+            data["Boy"] = row[1][:4]
+            data["Girl"] = row[2][:4]
+            array.append(data)
 
-    with open('obesitas.json', 'w') as jsonObesity:
-        for line in csvObesityReader:
-            json.dump((line[0], line[1][:4], line[2][:4]), jsonObesity)
+datagroot = {"All_data": array}
+
+with open('obesitas.json', 'w') as jsonObesity:
+    json.dump(datagroot, jsonObesity)

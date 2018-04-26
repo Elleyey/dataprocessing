@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <link rel="stylesheet" href="styles.css">
+        <meta charset="utf-8">
+        <script type="text/javascript" src="D3/d3.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+
+        // set size of SVG with width and height
+        var w = 800;
+        var h = 400;
+
+      // open json file
+      d3.json("obesitas.json", function(data) {
+          var dataset = Object.values(data)[0]
+
+          // get country values
+          var country = dataset.map(function(d){
+            return d["Country"];
+          });
+
+          // get values for boys
+          var boy = dataset.map(function (d){
+            return d["Boy"];
+          });
+
+          // get values for girls
+          var girl = dataset.map(function (d){
+            return d["Girl"];
+          });
+
+          // create the SVG element
+          var svg = d3.select("body")
+                      .append("svg")
+                      .attr("width", w)
+                      .attr("height", h);
+
+          // make Barchart, width and height of bars
+          svg.selectAll("rect")
+              .data(dataset)
+              .enter()
+              .append("rect")
+              .attr("x", 0)
+              .attr("y", 0)
+              .attr("width", 20)
+              .attr("height", 100)
+    });

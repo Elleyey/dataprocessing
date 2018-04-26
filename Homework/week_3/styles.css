@@ -1,0 +1,28 @@
+div.bar {
+    display: inline-block;
+    width: 20px;
+    background-color: teal;
+    margin-right: 2px;
+}
+
+p1 {
+  color: navy;
+  font: 14px calibri;
+}
+
+p2 {
+  color: navy;
+  font: 10px calibri;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
