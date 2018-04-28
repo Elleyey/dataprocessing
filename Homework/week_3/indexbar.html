@@ -1,138 +1,142 @@
 <!DOCTYPE html>
+<!-- Got code for interactivity partly from: http://bl.ocks.org/Caged/6476579
+ Got code for barchart partly from: http://alignedleft.com/tutorials/d3-->
+
 <html lang="en">
     <head>
       <link rel="stylesheet" href="styles.css">
         <meta charset="utf-8">
         <script type="text/javascript" src="D3/d3.js"></script>
+        <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
     </head>
     <body>
         <script type="text/javascript">
 
-        // set width and height
+        // set title and descriptive paragraph
+        d3.select("head").append("title")
+          .text("Barchart obesity among children");
+        d3.select("body").append("h1")
+          .text("Obesity rates among girls aged 5 - 19 (%).");
+        d3.select("body").append("p")
+          .text("World Health Organization in 2016.")
+          .attr("class", "link")
+          .on("click", function() {
+            window.open("http://apps.who.int/gho/data/view.main.BMIPLUS2C05-19v?lang=en");
+          })
+        d3.select("body").append("p")
+          .text("By Ellemijke Donner (10734198).\n");
+
+
+        // set width and height of graph, of svg, set margins, set max value
         var w = 400;
-        var h = 200;
-        var barPadding = 3;
-        var heightMargin = 250;
-        var widthMargin = 30;
+        var h = 250;
+        var barPadding = 4;
+        var heightMargin = 75;
+        var widthMargin = 50;
+        var svgW = 400 + widthMargin;
+        var svgH = 250 + (2 * heightMargin);
+        var maxValue = 25;
 
-        // set title
-          d3.select("head").append("title")
-            .text("Barchart obesity among children")
-          d3.select("body").append("p1")
-            .text("This barchart shows obesity rates in %, among girls, as measured by the WHO in 2016.\n")
-          d3.select("body").append("p2")
-            .text("By Ellemijke Donner (10734198).")
-
-
-        d3.json("obesitas.json", function(data) {
+        // open the json file (first array)
+        d3.json("obesitas.json", function(data){
           var dataset = Object.values(data)[0]
 
-        // get country values
-        var country = dataset.map(function(d){
-          return d["Country"];
-        });
+          // get country values
+          var country = dataset.map(function(d){
+            return d["Country"];
+          });
 
-        // get values for boys
-        var boy = dataset.map(function (d){
-          return d["Boy"];
-        });
+          // get obesity rates for girls
+          var girl = dataset.map(function (d){
+            return d["Girl"];
+          });
 
-        // get values for girls
-        var girl = dataset.map(function (d){
-          return d["Girl"];
-        });
+          // get interactivity(label), give label
+          var tip = d3.tip()
+            .attr("class", "d3-tip")
+            .offset([-20,0])
+            .html (function (d, i) {
+              return "<strong>Obesity in %:</strong> <span style='color:black'>" + girl[i] + "</span>"
+          })
 
-        // make the svg
-        var svg = d3.select("body").append("svg")
-                     .attr("width", w + (2 * widthMargin))
-                     .attr("height", h + (2 * heightMargin));
+          // make the svg
+          var svg = d3.select("body").append("svg")
+                      .attr("width", svgW)
+                      .attr("height", svgH);
 
-        // make scale
-        var xScale = d3.scale.linear()
-                      .domain([0, country.length])
-                      .range([widthMargin, w + widthMargin]);
+          // show tips
+          svg.call(tip);
 
-        var yScale = d3.scale.linear()
-                      .domain([0, 25])
-                      .range([25, h]);
+          // make x scale (domain is values (0 to 17), range is where x axis begins and ends)
+          var xScale = d3.scale.linear()
+                        .domain([0, country.length])
+                        .range([widthMargin, svgW]);
 
-        var axisScale = d3.scale.linear()
-                          .domain([0, 25])
-                          .range([h, 0]);
+          // make y scale (domain is values of obesity, range is where y axis begins and ends)
+          var yScale = d3.scale.linear()
+                        .domain([0, maxValue])
+                        .range([0, h]);
 
-        var xAxis = d3.svg.axis()
-                      .scale(xScale)
-                      .orient("bottom")
-                      .ticks(girl.length)
-                      .tickFormat(function(d, i){
-                                return country[i]
-                      });
+          // scale the values correctly
+          var axisScale = d3.scale.linear()
+                            .domain([0, maxValue])
+                            .range([h, 0]);
 
-        var yAxis = d3.svg.axis()
-                      .scale(axisScale)
-                      .orient("left")
-                      .ticks(5);
+          // set x axis according to xScale
+          var xAxis = d3.svg.axis()
+                        .scale(xScale)
+                        .orient("bottom")
+                        .ticks(country.length)
+                        .tickFormat(function(d, i){
+                                  return country[i]
+                        });
+
+          // set y axis accoring to axisScale
+          var yAxis = d3.svg.axis()
+                        .scale(axisScale)
+                        .orient("left")
+                        .ticks(5);
 
 
           // create SVG Barchart
-          svg.selectAll("rect")
+          svg.selectAll(".bar")
                .data(girl)
                .enter()
                .append("rect")
+               .attr("class", "bar")
                .attr("x", function(d, i) {
                  return i * (w / girl.length) + widthMargin;
                })
                .attr("y", function (d){
-                 return h + heightMargin - yScale((d));
+                 return h + heightMargin - yScale(d);
                })
                .attr("width", w / girl.length - barPadding)
                .attr("height", function(d) {
                  return yScale(d);
                })
-               .attr("fill", "pink")
+               .attr("fill", function(d) {
+                 return "rgb(255, 100, " + (d * 10) + ")";
+               })
+               .on("mouseover", tip.show)
+               .on("mouseout", tip.hide);
 
 
-        //   svg.selectAll("text")
-          //     .data(girl)
-          //     .enter()
-          //     .append("text")
-          //     .text(function (d) {
-          //       return d;
-          //     })
-            //   .attr("x", function(d, i) {
-              //   return i * (w / dataset.length); // +5
-    //           })
-      //         .attr("y", function (d) {
-        //         return h - (d * 4); // + 15
-          //     })
-            //   .attr("text-anchor", "middle")
-
-            //svg.append("g")
-//                .attr("class", "axis")
-  //              .attr("transform", "translate(0,"+ (h - padding) + ")")
-    //            .call(xAxis);
-//
-  //          svg.append("g")
-    //            .attr("class", "axis")
-      //          .attr("transform", "translate(0,"+ (h - padding) + ")")
-        //        .call(yAxis);
-        // create X axis
+            // create X axis
             svg.append("g")
                 .attr("class","axis")
                 .attr("transform", "translate(0," + (h + heightMargin) + ")")
                 .call(xAxis)
                 .selectAll("text")
                 .style("text-anchor", "end")
-                .attr("dx", "-.10em")
-                .attr("dy", ".70em")
-                .attr("transform", "rotate(-65)")
+                .attr("transform", "rotate(-50)")
+
             // create Y axis
             svg.append("g")
                 .attr("class", "axis")
                 .attr("transform", "translate(" + widthMargin + "," +
                        heightMargin + ")")
                 .call(yAxis);
-});
+        });
         </script>
     </body>
 </html>

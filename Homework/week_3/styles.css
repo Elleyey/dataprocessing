@@ -1,19 +1,51 @@
-div.bar {
-    display: inline-block;
-    width: 20px;
-    background-color: teal;
-    margin-right: 2px;
+
+h1 {
+  font: 24px calibri;
+  font-weight: bold;
 }
 
-p1 {
-  color: navy;
+.bar:hover {
+  fill: grey;
+}
+
+.d3-tip {
+  line-height: 0.2;
+  padding: 10px;
+  background: rgba(136,136,136, 0.3);
+  color: rb(56,56,56);
+  border-radius: 2px;
+  font: 12px calibri;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font: 10px calibri;
+  width: 100%;
+  line-height: 1;
+  color: rgba(136,136,136, 0.3);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+p {
   font: 14px calibri;
 }
 
-p2 {
-  color: navy;
-  font: 10px calibri;
+.link {
+  color: tomato;
+  text-decoration: underline;
 }
+
 
 .axis path,
 .axis line {
