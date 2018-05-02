@@ -1,0 +1,31 @@
+/* Ellemijke Donner, 10734198, scatterplot, CSS */
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+
+h1 {
+  font: 24px calibri;
+  font-weight: bold;
+}
+
+p {
+  font: 14px calibri;
+}
+
+.link {
+  color: tomato;
+  text-decoration: underline;
+}
+
+label {
+  font: 10 px calibri;
+}
