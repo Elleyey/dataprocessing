@@ -15,8 +15,10 @@ window.onload = function()
     var obj = JSON.parse(response.responseText);
     var array = [];
     var countries = obj.structure.dimensions.observation[0].values;
+    //console.log(countries[0].name);
+    var countriesLength = countries.length;
 
-    for (var i = 0; i < countries.length; i++)
+    for (var i = 0; i < countriesLength; i++)
     {
       var expectancyPosition = i + ":0:0:0"
       var turnoutPosition = i + ":1:0:0"
@@ -32,6 +34,7 @@ window.onload = function()
           socialNetwork: obj.dataSets[0].observations[networkPosition][0],
         });
       }
+
 
       // set title and descriptive paragraph
       d3.select("head").append("title")
@@ -56,6 +59,13 @@ window.onload = function()
           width = 600 - margin.left - margin.right,
           height = 500 - margin.top - margin.bottom;
 
+      var tip = d3.tip()
+                  .attr("class", "d3-tip")
+                  .offset([-10, 0])
+                  .html(function (d, i) {
+                      console.log(countries[i].name);
+                      return "<strong>Country: </strong> <div style='color:white'>" + countries[i].name + "</div>";
+                  });
 
       // create SVG element
       var svg = d3.select("body")
@@ -65,6 +75,7 @@ window.onload = function()
               .append("g")
               .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+      svg.call(tip);
 
       // make yScale
       var y = d3.scaleLinear()
@@ -75,7 +86,7 @@ window.onload = function()
                     return (d.lifeSatisfaction + 1);
                   })])
                     .range([height, 0]);
-
+                  
       // make xScale
       var x = d3.scaleLinear()
                 .domain([d3.min(dataset, function(d) {
@@ -90,6 +101,15 @@ window.onload = function()
       var xAxis = d3.axisBottom(x);
       var yAxis = d3.axisLeft(y);
 
+    //  var color = d3.scaleLinear()
+      //              .domain([d3.min(dataset, function(d) {
+        //                return (d.lifeSatisfaction);
+          //          }),
+            //        d3.max(dataset, function(d) {
+              //        return (d.lifeSatisfaction);
+                //    })])
+                  //  .interpolate(d3.interpolateHcL)
+                    //.range([d3.rgb("#ece7f2"), d3.rgb("#2b8cbe")]);
 
       // make points on svg (lifeExpectancy x lifeSatisfaction)
       svg.selectAll("circle")
@@ -102,8 +122,12 @@ window.onload = function()
           .attr("cy", function(d) {
             return y(d.lifeSatisfaction);
           })
-          .attr("r", 5)
-          .attr("fill", "pink");
+          .attr("fill", function(d, i) {
+              return "rgb(" + 50 * i + ", 0, 100)"
+          })
+          .attr("r", 7)
+          .on("moseover", tip.show)
+          .on("mouseout", tip.hide);
 
       svg.append("g")
           .attr("class", "axis")
@@ -115,7 +139,7 @@ window.onload = function()
           .style("font-size", "14px")
           .style("font-family", "calibri")
           .style("text-anchor", "middle")
-          .text("Life expectancy in years");
+          .text("Life expectancy in years (by birth)");
 
       svg.append("g")
             .attr("class", "axis")
