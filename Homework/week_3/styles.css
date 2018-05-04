@@ -1,3 +1,4 @@
+/* Ellemijke Donner, 10734198, styles.css for scatterplot.js and scatterplot.html*/
 
 h1 {
   font: 24px calibri;
@@ -6,35 +7,6 @@ h1 {
 
 .bar:hover {
   fill: grey;
-}
-
-.d3-tip {
-  line-height: 0.2;
-  padding: 10px;
-  background: rgba(136,136,136, 0.3);
-  color: rb(56,56,56);
-  border-radius: 2px;
-  font: 12px calibri;
-}
-
-/* Creates a small triangle extender for the tooltip */
-.d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font: 10px calibri;
-  width: 100%;
-  line-height: 1;
-  color: rgba(136,136,136, 0.3);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}
-
-/* Style northward tooltips differently */
-.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
 }
 
 p {
