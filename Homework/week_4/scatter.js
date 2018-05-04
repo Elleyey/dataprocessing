@@ -3,7 +3,7 @@
 // load data
 window.onload = function()
 {
-  var data = "http://stats.oecd.org/SDMX-JSON/data/RWB/CAN+CHL+FIN+DEU+ISL+ISR+ITA+JPN+KOR+MEX+NLD+NZL+NOR+PRT+SVN+ESP+SWE+GBR.LIFE_EXP+VOTERS_SH+SUBJ_SOC_SUPP+SUBJ_LIFE_SAT.VALUE/all?startTime=2014&endTime=2014&dimensionAtObservation=allDimensions";
+  var data = "https://stats.oecd.org/SDMX-JSON/data/RWB/CAN+CHL+FIN+DEU+ISL+ISR+ITA+JPN+KOR+MEX+NLD+NZL+NOR+PRT+SVN+ESP+SWE+GBR.LIFE_EXP+VOTERS_SH+SUBJ_SOC_SUPP+SUBJ_LIFE_SAT.VALUE/all?startTime=2014&endTime=2014&dimensionAtObservation=allDimensions";
 
   d3.queue()
   .defer(d3.request, data)
