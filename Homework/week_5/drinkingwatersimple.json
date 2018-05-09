@@ -1,0 +1,147 @@
+{
+  "dimension": [
+                 {
+                   "label": "GHO",
+                   "display": "Indicator"
+                 },
+                 {
+                   "label": "PUBLISHSTATE",
+                   "display": "PUBLISH STATES"
+                 },
+                 {
+                   "label": "YEAR",
+                   "display": "Year"
+                 },
+                 {
+                   "label": "REGION",
+                   "display": "WHO region"
+                 },
+                 {
+                   "label": "COUNTRY",
+                   "display": "Country"
+                 },
+                 {
+                   "label": "RESIDENCEAREATYPE",
+                   "display": "Residence Area Type"
+                 }
+               ],
+    "fact": [
+              {
+                "dims": {
+                          "COUNTRY": "Argentina",
+                          "YEAR": "2015",
+                          "GHO": "Population using at least basic drinking-water services (%)",
+                          "RESIDENCEAREATYPE": "Total"
+                        },
+                "Value": "100"
+              },
+              {
+                "dims": {
+                          "COUNTRY": "Bolivia (Plurinational State of)",
+                          "YEAR": "2015",
+                          "GHO": "Population using at least basic drinking-water services (%)",
+                          "RESIDENCEAREATYPE": "Total"
+                        },
+                "Value": "93"
+              },
+              {
+                "dims": {
+                          "COUNTRY": "Brazil",
+                          "YEAR": "2015",
+                          "GHO": "Population using at least basic drinking-water services (%)",
+                          "RESIDENCEAREATYPE": "Total"
+                        },
+                "Value": "97"
+              },
+              {
+                "dims": {
+                          "COUNTRY": "Chile",
+                          "YEAR": "2015",
+                          "GHO": "Population using at least basic drinking-water services (%)",
+                          "RESIDENCEAREATYPE": "Total"
+                        },
+                "Value": "100"
+              },
+              {
+                "dims": {
+                          "COUNTRY": "Colombia",
+                          "YEAR": "2015",
+                          "GHO": "Population using at least basic drinking-water services (%)",
+                          "RESIDENCEAREATYPE": "Total"
+                        },
+                "Value": "97"
+              },
+              {
+                "dims": {
+                          "COUNTRY": "Ecuador",
+                          "YEAR": "2015",
+                          "GHO": "Population using at least basic drinking-water services (%)",
+                          "RESIDENCEAREATYPE": "Total"
+                        },
+                "Value": "93"
+              },
+              {
+                "dims": {
+                          "COUNTRY": "Guyana",
+                          "YEAR": "2015",
+                          "GHO": "Population using at least basic drinking-water services (%)",
+                          "RESIDENCEAREATYPE": "Total"
+                        },
+                "Value": "95"
+              },
+              {
+                "dims": {
+                          "COUNTRY": "Panama",
+                          "YEAR": "2015",
+                          "GHO": "Population using at least basic drinking-water services (%)",
+                          "RESIDENCEAREATYPE": "Total"
+                        },
+                "Value": "95"
+              },
+              {
+                "dims": {
+                          "COUNTRY": "Paraguay",
+                          "YEAR": "2015",
+                          "GHO": "Population using at least basic drinking-water services (%)",
+                          "RESIDENCEAREATYPE": "Total"
+                        },
+                "Value": "99"
+              },
+              {
+                "dims": {
+                          "COUNTRY": "Peru",
+                          "YEAR": "2015",
+                          "GHO": "Population using at least basic drinking-water services (%)",
+                          "RESIDENCEAREATYPE": "Total"
+                        },
+                "Value": "90"
+              },
+              {
+                "dims": {
+                          "COUNTRY": "Suriname",
+                          "YEAR": "2015",
+                          "GHO": "Population using at least basic drinking-water services (%)",
+                          "RESIDENCEAREATYPE": "Total"
+                        },
+                "Value": "95"
+              },
+              {
+                "dims": {
+                          "COUNTRY": "Uruguay",
+                          "YEAR": "2015",
+                          "GHO": "Population using at least basic drinking-water services (%)",
+                          "RESIDENCEAREATYPE": "Total"
+                        },
+                "Value": "99"
+              },
+              {
+                "dims": {
+                          "COUNTRY": "Venezuela (Bolivarian Republic of)",
+                          "YEAR": "2015",
+                          "GHO": "Population using at least basic drinking-water services (%)",
+                          "RESIDENCEAREATYPE": "Total"
+                        },
+                "Value": "97"
+              }
+      ]
+}
