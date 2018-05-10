@@ -4,13 +4,13 @@
 window.onload = function()
 {
 
-  d3.queue()
+  queue()
     .defer(d3.json, 'obesityfiltered.json')
     .defer(d3.json, 'drinkingwatersimple.json')
-    .awaitAll(makeMap);
+    .await(makeMap);
 
 
-  function makeMap(error, response) {
+  function makeMap(error, obesitySimple, waterSimple) {
       if (error) throw error;
 
       // set needed variables
@@ -20,9 +20,9 @@ window.onload = function()
       // put data in array
       for (var i = 0; i < countriesLength; i++)
        {
-         var countryName = response[0]["fact"][i]["dims"]["COUNTRY"];
-         var obesityValue = response[0]["fact"][i]["Value"];
-         var waterValue = response[1]["fact"][i]["Value"];
+         var countryName = obesitySimple["fact"][i]["dims"]["COUNTRY"];
+         var obesityValue = obesitySimple["fact"][i]["Value"];
+         var waterValue = waterSimple["fact"][i]["Value"];
 
          data.push(
              {
@@ -33,13 +33,16 @@ window.onload = function()
        }
 
        // open map of South America
-       var map = d3.xml("southAmerica.svg").mimeType("image/svg+xml").get(function(error, xml) {
-         if (error) throw error;
-         document.body.appendChild(xml.documentElement);
-       });
+    //    var map = d3.xml("southAmerica.svg").mimeType("image/svg+xml").get(function(error, xml) {
+    //      if (error) throw error;
+    //      document.body.appendChild(xml.documentElement);
+    //    });
+    //
+    // var peru = document.getElementById("Peru")
+    //                     .fill("red");
 
-    var peru = document.getElementById("Peru")
-                        .fill("red");
+    var map = new Datamap({element: document.getElementById('container')});
+
 
 
 
