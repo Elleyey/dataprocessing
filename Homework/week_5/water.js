@@ -33,6 +33,11 @@ window.onload = function()
              });
        }
 
+    // var palletteScale = d3.scale.linear()
+    //                       .domain([90, 100])
+    //                       .range(["#CC0000", "#FFCCCC"]);
+
+
     var map = new Datamap({
       element: document.getElementById("container"),
       scope: 'world',
@@ -41,37 +46,65 @@ window.onload = function()
         var projection = d3.geo.equirectangular()
                             .center([-50, -25])
                             .rotate([4.4, 0])
-                            .scale(200)
+                            .scale(400)
                             .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
         var path = d3.geo.path()
                       .projection(projection);
-
         return {path: path, projection: projection};
       },
       fills: {
         defaultFill: 'rgb(255, 255, 255)',
-        NorthAmerica: 'rgba(255, 105, 180, 0.8)'
+        // NorthAmerica: 'rgba(255, 105, 180, 0.8)',
+        LOW: 'rgb(255, 102, 102)',
+        MEDIUM: 'rgb(153, 204, 255)',
+        HIGH: 'rgb(153, 153, 255)',
       },
       data: {
-        PER: { fillKey: 'NorthAmerica'},
-        ARG: { fillKey: 'NorthAmerica'},
-        BOL: { fillKey: 'NorthAmerica'},
-        BRA: { fillKey: 'NorthAmerica'},
-        CHL: { fillKey: 'NorthAmerica'},
-        COL: { fillKey: 'NorthAmerica'},
-        ECU: { fillKey: 'NorthAmerica'},
-        GUY: { fillKey: 'NorthAmerica'},
-        VEN: { fillKey: 'NorthAmerica'},
-        URY: { fillKey: 'NorthAmerica'},
-        SUR: { fillKey: 'NorthAmerica'},
+        // nu gehardcode omdat ik het niet werkend kreeg anders
+        // wil ook nog opzoek naar andere data, dit zegt niet zoveel
+        PER: { fillKey: 'LOW',
+                numberOfThings: 90},
+        ARG: { fillKey: 'HIGH',
+                numberOfThings: 100},
+        BOL: { fillKey: 'LOW',
+                numberOfThings: 93},
+        BRA: { fillKey: 'HIGH',
+                numberOfThings: 97},
+        CHL: { fillKey: 'HIGH',
+                numberOfThings: 100},
+        COL: { fillKey: 'HIGH',
+                numberOfThings: 97},
+        ECU: { fillKey: 'LOW',
+                numberOfThings: 93},
+        GUY: { fillKey: 'MEDIUM',
+                numberOfThings: 95},
+        VEN: { fillKey: 'HIGH',
+                numberOfThings: 97},
+        URY: { fillKey: 'HIGH',
+                numberOfThings: 99},
+        SUR: { fillKey: 'MEDIUM',
+                numberOfThings: 95},
         GUF: { fillKey: 'defaultFill'},
-        PRY: { fillKey: 'NorthAmerica'},
-        PAN: { fillKey: 'NorthAmerica'},
+        PRY: { fillKey: 'HIGH',
+                numberOfThings: 99},
+        PAN: { fillKey: 'MEDIUM',
+                numberOfThings: 95},
 
-      }
+      },
+      geographyConfig: {
+            highlightOnHover: false,
+            popupTemplate: function(geo, data) {
+              return ['<div class="tooltip"><strong>',
+                        'Access to clean water in ' + geo.properties.name,
+                        ': ' + data.numberOfThings,
+                        '</strong></div>'].join('');
+            }
+        }
     });
 
-// close doFunction
+    map.legend();
+
+// close makeMap
 };
 //close window onload
 };
