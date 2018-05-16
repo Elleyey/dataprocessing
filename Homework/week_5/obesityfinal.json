@@ -92,6 +92,36 @@
               },
               {
                 "dims": {
+                          "COUNTRY": "Brazil",
+                          "YEAR": "2015",
+                          "GHO": "Prevalence of obesity among children and adolescents, BMI > +2 standard deviations above the median (crude estimate) (%)",
+                          "AGEGROUP": "5-19  years",
+                          "SEX": "Both sexes"
+                        },
+                "Value": "10.4 [7.0-14.4]"
+              },
+              {
+                "dims": {
+                          "COUNTRY": "Brazil",
+                          "YEAR": "2015",
+                          "GHO": "Prevalence of obesity among children and adolescents, BMI > +2 standard deviations above the median (crude estimate) (%)",
+                          "AGEGROUP": "5-19  years",
+                          "SEX": "Male"
+                        },
+                "Value": "11.9 [6.8-18.1]"
+              },
+              {
+                "dims": {
+                          "COUNTRY": "Brazil",
+                          "YEAR": "2015",
+                          "GHO": "Prevalence of obesity among children and adolescents, BMI > +2 standard deviations above the median (crude estimate) (%)",
+                          "AGEGROUP": "5-19  years",
+                          "SEX": "Female"
+                        },
+                "Value": "8.9 [4.8-14.3]"
+              },
+              {
+                "dims": {
                           "COUNTRY": "Chile",
                           "YEAR": "2015",
                           "GHO": "Prevalence of obesity among children and adolescents, BMI > +2 standard deviations above the median (crude estimate) (%)",
@@ -179,36 +209,6 @@
                           "SEX": "Female"
                         },
                 "Value": "8.0 [3.3-14.3]"
-              },
-              {
-                "dims": {
-                          "COUNTRY": "Guatemala",
-                          "YEAR": "2015",
-                          "GHO": "Prevalence of obesity among children and adolescents, BMI > +2 standard deviations above the median (crude estimate) (%)",
-                          "AGEGROUP": "5-19  years",
-                          "SEX": "Both sexes"
-                        },
-                "Value": "9.5 [4.5-16.2]"
-              },
-              {
-                "dims": {
-                          "COUNTRY": "Guatemala",
-                          "YEAR": "2015",
-                          "GHO": "Prevalence of obesity among children and adolescents, BMI > +2 standard deviations above the median (crude estimate) (%)",
-                          "AGEGROUP": "5-19  years",
-                          "SEX": "Male"
-                        },
-                "Value": "9.5 [2.6-20.7]"
-              },
-              {
-                "dims": {
-                          "COUNTRY": "Guatemala",
-                          "YEAR": "2015",
-                          "GHO": "Prevalence of obesity among children and adolescents, BMI > +2 standard deviations above the median (crude estimate) (%)",
-                          "AGEGROUP": "5-19  years",
-                          "SEX": "Female"
-                        },
-                "Value": "9.4 [3.6-17.7]"
               },
               {
                 "dims": {

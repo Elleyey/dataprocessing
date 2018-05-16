@@ -36,7 +36,7 @@ window.onload = function()
 {
 
   queue()
-    .defer(d3.json, 'obesityfiltered.json')
+    .defer(d3.json, 'obesityfinal.json')
     .defer(d3.json, 'drinkingwatersimple.json')
     .awaitAll(getData)
     // .await(makeMap);
@@ -52,11 +52,11 @@ window.onload = function()
     var obj = {};
     // put data in array
 
-    for (var i = 0; i < countriesLength; i++)
+    for (var i = 0; i < 39; i++)
      {
        var countryName = obesitySimple["fact"][i]["dims"]["COUNTRY"];
        var obesityValue = obesitySimple["fact"][i]["Value"];
-       var waterValue = waterSimple["fact"][i]["Value"];
+       var waterValue = waterSimple["fact"][Math.floor(i / 3)]["Value"];
        var countryISOlist = { "Argentina" : "ARG",
                               "Bolivia (Plurinational State of)" : "BOL",
                               "Brazil" : "BRA",
@@ -87,7 +87,7 @@ window.onload = function()
         fillKey: checkBucket(waterValue)
       }
      }
-     
+     console.log(dataArray);
      makeMap(obj, dataArray);
      //makeBars(data);
   };
@@ -127,7 +127,9 @@ function makeMap(obj, dataArray) {
             }
         },
       done: function(datamap) {
-        datamap.svg.selectAll('.datamaps-subunit').on('click', function(d) {
+        datamap.svg
+        .selectAll('.datamaps-subunit')
+        .on('click', function(d) {
           var land = d.id;
           var obesityLand = obj[land]["obesity"];
           console.log(obesityLand);
@@ -148,23 +150,27 @@ function highlightBar (iso, data) {
     // .duration(750)
     .attr("fill", "lightslategrey")
     .transition()
-    .duration(750)
+    .delay(1000)
     .attr("fill", function(d){
        return giveColor(+d.obesity)
      });
 }
 
-
+function fun(filterKey){
+  filterKey // "Male", "Female", "Both sexes"
+  data.filter(filterKey)
+}
 
 function makeBars(dataArray) {
 
   var countries = [];
   var dataArrays = dataArray;
 
-  for (var i = 0; i < 13; i++) {
+  for (var i = 0; i < 39; i = i + 2) {
     var temp = dataArrays[i]["country"];
     countries.push(temp.slice(0, 10));
   }
+  console.log(countries);
 
   // set width and height of graph, of svg, set margins, set max value
   var width = 400;
@@ -181,6 +187,9 @@ function makeBars(dataArray) {
     .html (function (d, i) {
       return "<strong>Obesity in %:</strong> <span style='color:black'>" + d.obesity + "</span>"
   })
+
+  d3.select("#container-bar").selectAll("svg")
+    .remove();
 
   // make the svg
   var svg = d3.select("#container-bar")
