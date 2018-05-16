@@ -67,3 +67,11 @@ p {
     font-family: sans-serif;
     font-size: 11px;
 }
+
+#container {
+	float: left;
+}
+
+#container-bar {
+	display: inline-block;
+}

@@ -48,7 +48,7 @@ window.onload = function()
     if (error) throw error;
     // set needed variables
     var countriesLength = 13;
-    var data = [];
+    var dataArray = [];
     var obj = {};
     // put data in array
 
@@ -71,7 +71,7 @@ window.onload = function()
                               "Uruguay" : "URY",
                               "Venezuela (Bolivarian Republic of)" : "VEN"};
 
-       data.push(
+       dataArray.push(
            {
              // console.log(data)
              country: countryName,
@@ -87,12 +87,13 @@ window.onload = function()
         fillKey: checkBucket(waterValue)
       }
      }
-     makeMap(obj);
-     makeBars(data);
+     
+     makeMap(obj, dataArray);
+     //makeBars(data);
   };
 
 
-function makeMap(data) {
+function makeMap(obj, dataArray) {
 
     var map = new Datamap({
       element: document.getElementById("container"),
@@ -114,16 +115,25 @@ function makeMap(data) {
         '94 - 96 %': 'rgb(153, 204, 255)',
         '97 - 100 %': 'rgb(153, 153, 255)',
       },
-      data: data,
+      data: obj,
       geographyConfig: {
             highlightOnHover: false,
             popupTemplate: function(geo, data) {
+              highlightBar(geo.id, data);
               return ['<div class="tooltip"><strong>',
                         'Access to clean water in %, ' + geo.properties.name,
                         ': ' + data.water,
                         '</strong></div>'].join('');
             }
-        }
+        },
+      done: function(datamap) {
+        datamap.svg.selectAll('.datamaps-subunit').on('click', function(d) {
+          var land = d.id;
+          var obesityLand = obj[land]["obesity"];
+          console.log(obesityLand);
+          makeBars(dataArray);
+        });
+      }
     });
 
     map.legend();
@@ -131,13 +141,28 @@ function makeMap(data) {
 // close makeMap
 };
 
-function makeBars(data) {
+function highlightBar (iso, data) {
+
+  d3.select("#" + iso)
+    // .transition()
+    // .duration(750)
+    .attr("fill", "lightslategrey")
+    .transition()
+    .duration(750)
+    .attr("fill", function(d){
+       return giveColor(+d.obesity)
+     });
+}
+
+
+
+function makeBars(dataArray) {
 
   var countries = [];
-  var dataArray = data;
+  var dataArrays = dataArray;
 
   for (var i = 0; i < 13; i++) {
-    var temp = dataArray[i]["country"];
+    var temp = dataArrays[i]["country"];
     countries.push(temp.slice(0, 10));
   }
 
@@ -158,7 +183,7 @@ function makeBars(data) {
   })
 
   // make the svg
-  var svg = d3.select("body")
+  var svg = d3.select("#container-bar")
               .append("svg")
               .attr("width", width + widthMargin)
               .attr("height", height + (2 * heightMargin))
@@ -195,7 +220,7 @@ function makeBars(data) {
                 .orient("left")
                 .ticks(5);
 
-
+  console.log(dataArray);
 
   // create SVG Barchart
   svg.selectAll(".bar")
@@ -203,6 +228,9 @@ function makeBars(data) {
        .enter()
        .append("rect")
        .attr("class", "bar")
+       .attr("id", function(d){
+         return d.countryISO;
+       })
        .attr("x", function(d, i) {
          return i * (width / 13) + widthMargin;
        })
