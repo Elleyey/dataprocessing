@@ -52,10 +52,20 @@ window.onload = function()
     var obj = {};
     // put data in array
 
-    for (var i = 0; i < 39; i++)
+  console.log(obesitySimple);
+    for (var i = 0; i < 39; i = i + 3)
      {
        var countryName = obesitySimple["fact"][i]["dims"]["COUNTRY"];
-       var obesityValue = obesitySimple["fact"][i]["Value"];
+       if (i < 35) {
+         var obesityBothP = obesitySimple["fact"][i]["Value"];
+         //var obesityMaleP = obesitySimple["fact"][i + 1]["Value"];
+         //var obesityFemaleP = obesitySimple["fact"][i + 2]["Value"];
+       }
+       else {
+         var obesityBothP = obesitySimple["fact"]["36"]["Value"];
+        // var obesityMaleP = obesitySimple["fact"]["37"]["Value"];
+         //var obesityFemaleP = obesitySimple["fact"]["38"]["Value"];
+       }
        var waterValue = waterSimple["fact"][Math.floor(i / 3)]["Value"];
        var countryISOlist = { "Argentina" : "ARG",
                               "Bolivia (Plurinational State of)" : "BOL",
@@ -76,14 +86,18 @@ window.onload = function()
              // console.log(data)
              country: countryName,
              countryISO: countryISOlist[countryName],
-             obesity: obesityValue.slice(0, 4),
+             obesityBoth: obesityBothP.slice(0, 4),
+            // obesityMale: obesityMaleP.slice(0, 4),
+             //obesityFemale: obesityFemaleP.slice(0, 4)
              //water: waterValue,
            });
 
       // make object list with data
       obj[countryISOlist[countryName]] = {
         water: waterValue,
-        obesity: obesityValue.slice(0,4),
+        obesityBoth: obesityBothP.slice(0,4),
+      //  obesityMale: obesityMaleP.slice(0, 4),
+        //obesityFemale: obesityFemaleP.slice(0, 4),
         fillKey: checkBucket(waterValue)
       }
      }
@@ -132,7 +146,7 @@ function makeMap(obj, dataArray) {
         .on('click', function(d) {
           var land = d.id;
           var obesityLand = obj[land]["obesity"];
-          console.log(obesityLand);
+          //console.log(obesityLand);
           makeBars(dataArray);
         });
       }
@@ -148,11 +162,11 @@ function highlightBar (iso, data) {
   d3.select("#" + iso)
     // .transition()
     // .duration(750)
-    .attr("fill", "lightslategrey")
-    .transition()
-    .delay(1000)
+    .attr("fill", "grey")
+    .transition(0)
+    //.delay(1000)
     .attr("fill", function(d){
-       return giveColor(+d.obesity)
+       return giveColor(+d.obesityBoth)
      });
 }
 
@@ -166,11 +180,11 @@ function makeBars(dataArray) {
   var countries = [];
   var dataArrays = dataArray;
 
-  for (var i = 0; i < 39; i = i + 2) {
+  for (var i = 0; i < 13; i++) {
     var temp = dataArrays[i]["country"];
     countries.push(temp.slice(0, 10));
   }
-  console.log(countries);
+  //console.log(countries);
 
   // set width and height of graph, of svg, set margins, set max value
   var width = 400;
@@ -185,7 +199,7 @@ function makeBars(dataArray) {
     .attr("class", "d3-tip")
     .offset([-20,0])
     .html (function (d, i) {
-      return "<strong>Obesity in %:</strong> <span style='color:black'>" + d.obesity + "</span>"
+      return "<strong>Obesity in %:</strong> <span style='color:black'>" + d.obesityBoth + "</span>"
   })
 
   d3.select("#container-bar").selectAll("svg")
@@ -229,7 +243,9 @@ function makeBars(dataArray) {
                 .orient("left")
                 .ticks(5);
 
-  console.log(dataArray);
+  //onsole.log(dataArray);
+
+  console.log(dataArray[0].obesityBoth);
 
   // create SVG Barchart
   svg.selectAll(".bar")
@@ -244,18 +260,18 @@ function makeBars(dataArray) {
          return i * (width / 13) + widthMargin;
        })
        .attr("y", function (d){
-         return height + heightMargin - y(+d.obesity);
+         return height + heightMargin - y(+d.obesityBoth);
        })
        .attr("width", width / 13 - barPadding)
        .attr("height", function(d) {
-         return y(+d.obesity);
+         return y(+d.obesityBoth);
        })
        // .attr("fill", function(d, i) {
        //   console.log(i);
        //  return "rgba(255, 100, " + (i * 10) + ", 0.6)";
        // })
        .attr("fill", function(d){
-         return giveColor(+d.obesity)
+         return giveColor(+d.obesityBoth)
        })
        .on("mouseover", tip.show)
        .on("mouseout", tip.hide);
