@@ -22,7 +22,7 @@ function giveColor(n){
   {
     return "rgb(255, 204, 204)"
   }
-  if (n > 10 && n < 15)
+  if (n > 10 && n < 16)
   {
     return "rgb(255, 153, 153)"
   }
@@ -135,14 +135,14 @@ window.onload = function()
 function makeMap(obj, dataArray) {
 
     var map = new Datamap({
-      element: document.getElementById("container"),
+      element: document.getElementById("container-map"),
       scope: 'world',
       // zoom in on South America
       setProjection: function(element) {
         var projection = d3.geo.equirectangular()
                             .center([-50, -25])
                             .rotate([4.4, 0])
-                            .scale(400)
+                            .scale(350)
                             .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
         var path = d3.geo.path()
                       .projection(projection);
@@ -196,67 +196,79 @@ function highlightBar (iso, data) {
      });
 }
 
-// function checkKey(selectedValue){
-//     if ('Male' == selectedValue) {
-//       return
-//     }// "Male", "Female", "Both sexes"
-//    data.filter(filterKey)
-//  }
-
-
 
 function makeButton(dataArray) {
-  // set button (working)
-  var select = d3.select("body").append('select')
-    .attr('class','select')
-    .on('change', onchange);
 
-  // set button (options)
-  var variables = ['Both Sexes', 'Male', 'Female'];
+  // delete existing button
+  d3.select('#button').selectAll('select')
+    .remove();
 
-  // set button (working)
-  var options = select
-      .selectAll('option')
-      .data(variables)
-      .enter()
-      .append('option')
-      .text(function (d) {
-          return d;
-        });
+    var selectedValue = 'Both Sexes';
+    // make button
+    var select = d3.select("#button").append('select')
+      .attr('class','select')
+      .on('change', onchange);
 
-    // start making scatterplot
-    function onchange() {
-       var selectedValue = d3.select('select').property('value');
+      // set button (options)
+      var variables = ['Both Sexes', 'Male', 'Female'];
 
-        makeBars(dataArray)
-}
+      // set button (working)
+      var options = select
+        .selectAll('option')
+        .data(variables)
+        .enter()
+        .append('option')
+        .text(function (d) {
+            return d;
+          });
 
-function makeBars(dataArray) {
+
+          function onchange() {
+            selectedValue = d3.select('select').property('value');
+
+            makeBars(dataArray, selectedValue)
+          }
+
+          makeBars(dataArray, selectedValue);
+      };
+
+
+function makeBars(dataArray, selectedValue) {
+
 
   var countries = [];
-  console.log(dataArray);
   var dataArrays = dataArray;
+  var selectedValue = selectedValue;
+
 
   for (var i = 0; i < 13; i++) {
     var temp = dataArrays[i]["country"];
     countries.push(temp.slice(0, 10));
   }
-  //console.log(countries);
+
 
   // set width and height of graph, of svg, set margins, set max value
-  var width = 400;
-  var height = 250;
+  var width = 300;
+  var height = 200;
   var barPadding = 4;
   var heightMargin = 75;
   var widthMargin = 50;
-  var maxValue = 20;
+  var maxValue = 25;
 
   // get interactivity(label), give label
   var tip = d3.tip()
     .attr("class", "d3-tip")
     .offset([-20,0])
     .html (function (d, i) {
+      if ('Both Sexes' == selectedValue){
       return "<strong>Obesity in %:</strong> <span style='color:black'>" + d.obesityBoth + "</span>"
+    }
+    if ('Male' == selectedValue) {
+      return "<strong>Obesity in %:</strong> <span style='color:black'>" + d.obesityMale + "</span>"
+    }
+    if ('Female' == selectedValue) {
+      return "<strong>Obesity in %:</strong> <span style='color:black'>" + d.obesityFemale + "</span>"
+    }
   })
 
   d3.select("#container-bar").selectAll("svg")
@@ -271,6 +283,7 @@ function makeBars(dataArray) {
 
   // show tip
   svg.call(tip);
+
 
   // make x scale (domain is values (0 to 17), range is where x axis begins and ends)
   var x = d3.scale.linear()
@@ -300,9 +313,6 @@ function makeBars(dataArray) {
                 .orient("left")
                 .ticks(5);
 
-  //onsole.log(dataArray);
-
-  console.log(dataArray[0].obesityBoth);
 
   // create SVG Barchart
   svg.selectAll(".bar")
@@ -317,18 +327,38 @@ function makeBars(dataArray) {
          return i * (width / 13) + widthMargin;
        })
        .attr("y", function (d){
+         if ('Both Sexes' == selectedValue){
          return height + heightMargin - y(+d.obesityBoth);
+       }
+       if ('Male' == selectedValue) {
+         return height + heightMargin - y(+d.obesityMale);
+       }
+       if ('Female' == selectedValue) {
+         return height + heightMargin - y(+d.obesityFemale);
+       }
        })
        .attr("width", width / 13 - barPadding)
        .attr("height", function(d) {
-         return y(+d.obesityBoth);
+         if ('Both Sexes' == selectedValue){
+          return y(+d.obesityBoth);
+         }
+         if ('Male' == selectedValue){
+          return y(+d.obesityMale);
+         }
+         if ('Female' == selectedValue){
+          return y(+d.obesityFemale);
+         }
        })
-       // .attr("fill", function(d, i) {
-       //   console.log(i);
-       //  return "rgba(255, 100, " + (i * 10) + ", 0.6)";
-       // })
        .attr("fill", function(d){
-         return giveColor(+d.obesityBoth)
+         if ('Both Sexes' == selectedValue){
+          return giveColor(+d.obesityBoth);
+         }
+         if ('Male' == selectedValue){
+          return giveColor(+d.obesityMale);
+         }
+         if ('Female' == selectedValue){
+          return giveColor(+d.obesityFemale);
+         }
        })
        .on("mouseover", tip.show)
        .on("mouseout", tip.hide);
@@ -376,4 +406,3 @@ function makeBars(dataArray) {
 
 //close window onload
 };
-}

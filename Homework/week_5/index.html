@@ -7,7 +7,7 @@
     <!-- om queue te kunnen gebruiken -->
     <script src="http://d3js.org/queue.v1.min.js"></script>
     <!--  link naar javascript-->
-    <script src="water.js"></script>
+    <script src="watertest.js"></script>
     <!-- nog niet duidelijk wat dit is -->
     <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script> -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
@@ -21,11 +21,35 @@
     <script type="text/javascript" src="/d3-tip.js"></script>
   </head>
   <body>
-  <h1>South America, defined by access to clean water (at least basic facilities in %)</h1>
-  <h2>By Ellemijke Donner, 10734198</h2>
+    <h1 class="title"> Clean Water VS Coca Cola </h1>
   <div id="container1">
-    <div id="container" style="position: relative; width: 500px; height: 550px;"></div>
-    <div id="container-bar"></div>
+    <div id="container-map" style="position: relative; width: 500px; height: 475px;">
+      <h1>South America</h1>
+    </div>
+    <div id="container-bar" style="position: relative; width: 350px; height: 350px;">
+      <div id= "button">
+        <h1> Prevelance of Obesity </h1>
+      </div>
+    </div>
+    <div id="container-text" class="story" style="position: relative; width: 350px; height: 350px;">
+      <h1>The Story</h1>
+      <p1>In many countries clean and fresh water is still not avaliable to all.
+        At the same time, obesity is spreading world wide as an epidemic.
+       While 10 % of the children in Peru do not have access to clean water,
+       almost the same number of children (aged 5 to 19) are overweight. As both these
+       issues concern (mal)nutrition, I thought it would be nice to visualize
+       them. On the left you can see South America, defined by the accessablity
+       of AT LEAST basic water drinking facilities. If you click on a country,
+       you will see a barchart that shows the obesity rates of all the Children
+       in South America. Hovering over the map, the barchart of that country will
+       light up. There is more! You can also pick for what gender (or both) you
+       would like to see the obesity rates.<br><br><a href="http://www.who.int/en/">WHO</a>
+       <br><br>
+       <p2>Ellemijke Donner | 10734198 | Minor Programmeren</p2>
+     </p1>
+    </div>
+
   </div>
+
 </body>
 </html>

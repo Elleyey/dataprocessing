@@ -34,20 +34,32 @@ h1
 {
 	font: 18px calibri;
 	font-weight: bold;
-	text-align: left;
+	text-align: center;
 }
 
 h2
 {
 	font: 14px calibri;
+	text-align: center;
 }
 
 .bar:hover {
   fill: grey;
 }
 
-p {
+p1 {
   font: 14px calibri;
+
+}
+
+p2 {
+  font: 12px calibri;
+
+}
+
+p3 {
+  font: 14px calibri;
+
 }
 
 .link {
@@ -68,10 +80,31 @@ p {
     font-size: 11px;
 }
 
-#container {
+#container-map {
 	float: left;
+
 }
 
 #container-bar {
+	float: right;
+}
+
+#container-text {
 	display: inline-block;
+}
+
+#button {
+	text-align: center;
+}
+
+.story {
+	text-align: center;
+}
+
+.title{
+	text-align: center;
+	font-size: 20px;
+	font-family: calibri;
+	border: 2px solid lightblue;
+	background-color: pink;
 }
