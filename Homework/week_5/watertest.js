@@ -64,6 +64,7 @@ Puts the data in an array for the Barchart, and in an object for the map. Gets
 called in window.onload.
 */
 function getData(error, response) {
+  
     var obesitySimple = response[0];
     var waterSimple = response[1];
     if (error) throw error;

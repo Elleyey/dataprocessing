@@ -1,12 +1,3 @@
-/* Code for making a web page, containing linked views.
-By Ellemijke Donner, 10734198.
-This file: obesityfinal.json containing the data concerning obesity.
-Other files needed:
-  - index.html for webpage design.
-  - stylesheet.css for style of webpage.
-  - drinkingwatersimple.json for data concerning the data concerning water.
-  - watertest.js for javascript code */
-
 {
   "dimension": [
                  {
