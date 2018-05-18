@@ -1,23 +1,31 @@
-<!--Ellemijke Donner, 10734198, index html for week 5-->
+<!--
+Code for making a web page, containing linked views.
+By Ellemijke Donner, 10734198.
+This file: index.html containing the javascript code.
+Other files needed:
+  - index.html for webpage design.
+  - stylesheet.css for style of webpage.
+  - obesityfinal.json for data concerning obesity.
+  - drinkingwatersimple.json for data concerning drinking water.
+  - watertest.js for javascript.
+ -->
+
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- versie 3.3 van d3 -->
+    <!-- version 3.3 of d3 -->
     <script src="https://d3js.org/d3.v3.js"></script>
-    <!-- om queue te kunnen gebruiken -->
+    <!-- to use queue anyways -->
     <script src="http://d3js.org/queue.v1.min.js"></script>
-    <!--  link naar javascript-->
+    <!-- link to javascript-->
     <script src="watertest.js"></script>
-    <!-- nog niet duidelijk wat dit is -->
-    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script> -->
+    <!-- to use topojson -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
-    <!-- hier zit Datamap -->
+    <!-- to use datamap-->
     <script src="/datamaps.world.min.js"></script>
-    <!--  om tip werkend te krijgen-->
-    <!-- <script src="d3-tip.js"></script> -->
-    <!-- om stylesheet te gebruiken -->
+    <!-- link to css file -->
     <link rel="stylesheet" href="stylesheet.css">
-    <!-- voor het gebruiken van tips in de barchart -->
+    <!-- to use tool-tip in barchart -->
     <script type="text/javascript" src="/d3-tip.js"></script>
   </head>
   <body>
@@ -37,19 +45,19 @@
         At the same time, obesity is spreading world wide as an epidemic.
        While 10 % of the children in Peru do not have access to clean water,
        almost the same number of children (aged 5 to 19) are overweight. As both these
-       issues concern (mal)nutrition, I thought it would be nice to visualize
-       them. On the left you can see South America, defined by the accessablity
-       of AT LEAST basic water drinking facilities. If you click on a country,
-       you will see a barchart that shows the obesity rates of all the Children
-       in South America. Hovering over the map, the barchart of that country will
-       light up. There is more! You can also pick for what gender (or both) you
-       would like to see the obesity rates.<br><br><a href="http://www.who.int/en/">WHO</a>
+       issues concern (mal)nutrition, I thought it would be fun to visualize
+       these extremes. On the left you can see South America, defined by the
+       accessablity of AT LEAST basic water drinking facilities. If you click on
+       a country, a barchart will appear that shows the obesity rates of all the
+       children in South America. Hovering over the map, the bar of that
+       country will light up. Wait, there is more! You can also pick for what gender (or both)
+       you would like to see the obesity rates. Note that all these data
+       concern data gathered in 2015. 
+       <br><br><a href="http://www.who.int/en/">WHO</a>
        <br><br>
        <p2>Ellemijke Donner | 10734198 | Minor Programmeren</p2>
      </p1>
     </div>
-
   </div>
-
 </body>
 </html>

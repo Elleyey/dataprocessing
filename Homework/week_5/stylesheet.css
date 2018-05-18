@@ -1,3 +1,14 @@
+/*
+Code for making a web page, containing linked views.
+By Ellemijke Donner, 10734198.
+This file: stylesheet.css containing the javascript code.
+Other files needed:
+  - index.html for webpage design.
+  - watertest.js for the javascript code.
+  - obesityfinal.json for data concerning obesity.
+  - drinkingwatersimple.json for data concerning drinking water.
+*/
+
 /* On mouse hover, lighten state color */
 path:hover {
 	fill-opacity: .7;
@@ -12,15 +23,12 @@ div.tooltip {
 	padding: 2px;
 	font: 12px calibri;
 	color: navy;
-/*	background: white;*/
-	border: 1px;
-	border-radius: 8px;
 	pointer-events: auto;
 }
 
 /* Legend Font Style */
 body {
-	font: 11px sans-serif;
+	font: 11px calibri;
 }
 
 /* Legend Position Style */
@@ -30,6 +38,7 @@ body {
 	top:350px;
 }
 
+/* Style h1 and h2*/
 h1
 {
 	font: 18px calibri;
@@ -43,31 +52,21 @@ h2
 	text-align: center;
 }
 
+/* make bar grey on hoover*/
 .bar:hover {
   fill: grey;
 }
 
+/* Give style to paragraphs*/
 p1 {
   font: 14px calibri;
-
 }
 
 p2 {
   font: 12px calibri;
-
 }
 
-p3 {
-  font: 14px calibri;
-
-}
-
-.link {
-  color: tomato;
-  text-decoration: underline;
-}
-
-
+/* Give axis nice look */
 .axis path,
 .axis line {
     fill: none;
@@ -80,6 +79,7 @@ p3 {
     font-size: 11px;
 }
 
+/* Set positions of map, bar, text and button */
 #container-map {
 	float: left;
 
@@ -97,6 +97,7 @@ p3 {
 	text-align: center;
 }
 
+/* style story and title */
 .story {
 	text-align: center;
 }

@@ -1,7 +1,19 @@
-// code for making two interactive datachars, by Ellemijke Donner, 10734198
+/*
+Code for making a web page, containing linked views.
+By Ellemijke Donner, 10734198.
+This file: Watertest.js containing the javascript code.
+Other files needed:
+  - index.html for webpage design.
+  - stylesheet.css for style of webpage.
+  - obesityfinal.json for data concerning obesity.
+  - drinkingwatersimple.json for data concerning drinking water.
+*/
 
-// function to determine color of country
+/* checkBucket function gives color to the map, according to accessability of
+drinking water. Gets called in getData.
+*/
 function checkBucket(n){
+  // give specific color accordingly to percentages
   if (n < 94) {
     return "90 - 93 %"
   }
@@ -13,7 +25,11 @@ function checkBucket(n){
   }
 }
 
+/* giveColor gives color to the barchart, according to the obesity rates in
+a certain country. Gets called in highlightBar and makeBars.
+*/
 function giveColor(n){
+  // give specific color accordingly to obesity percentages
   if ( n < 6)
   {
     return "rgba(255, 0, 0, 0.8)"
@@ -32,28 +48,31 @@ function giveColor(n){
   }
 }
 
+/* window onload gets the data before making the map of South America,
+then start showing page.
+*/
 window.onload = function()
 {
 
   queue()
     .defer(d3.json, 'obesityfinal.json')
     .defer(d3.json, 'drinkingwatersimple.json')
-    .awaitAll(getData)
-    // .await(makeMap);
-    //.await(makeBarchart);
+    .awaitAll(getData);
 
-  function getData(error, response) {
-    var obesitySimple = response[0]
-    var waterSimple = response[1]
+/* getData gets the data form obesityfinal.json and drinkingwatersimple.json.
+Puts the data in an array for the Barchart, and in an object for the map. Gets
+called in window.onload.
+*/
+function getData(error, response) {
+    var obesitySimple = response[0];
+    var waterSimple = response[1];
     if (error) throw error;
-    // set needed variables
     var countriesLength = 13;
     var dataArray = [];
-    //var dataArrayMale = [];
-    //var dataArrayFemale = [];
     var obj = {};
-    // put data in array
 
+    // iterate over data, with three steps at a time, to add the right data to
+    // a certain country.
     for (var i = 0; i < 39; i = i + 3)
      {
        var countryName = obesitySimple["fact"][i]["dims"]["COUNTRY"];
@@ -82,61 +101,36 @@ window.onload = function()
                               "Uruguay" : "URY",
                               "Venezuela (Bolivarian Republic of)" : "VEN"};
 
+      // put the data in dataArray
        dataArray.push(
            {
-             // console.log(data)
              country: countryName,
              countryISO: countryISOlist[countryName],
              obesityBoth: obesityBothP.slice(0, 4),
              obesityMale: obesityMaleP.slice(0, 4),
              obesityFemale: obesityFemaleP.slice(0, 4)
-             //water: waterValue,
            });
-      // dataArrayMale.push(
-      //        {
-      //          // console.log(data)
-      //          country: countryName,
-      //          countryISO: countryISOlist[countryName],
-      //          //obesityBoth: obesityBothP.slice(0, 4),
-      //          obesityMale: obesityMaleP.slice(0, 4),
-      //          //obesityFemale: obesityFemaleP.slice(0, 4)
-      //          //water: waterValue,
-      //          });
-      // dataArrayFemale.push(
-      //             {
-      //              // console.log(data)
-      //              country: countryName,
-      //              countryISO: countryISOlist[countryName],
-      //              //obesityBoth: obesityBothP.slice(0, 4),
-      //              //obesityMale: obesityMaleP.slice(0, 4),
-      //              obesityFemale: obesityFemaleP.slice(0, 4)
-      //              //water: waterValue,
-      //            });
 
-      // make object list with data
+      // make an object list with the data
       obj[countryISOlist[countryName]] = {
         water: waterValue,
-        obesityBoth: obesityBothP.slice(0,4),
-      //  obesityMale: obesityMaleP.slice(0, 4),
-        //obesityFemale: obesityFemaleP.slice(0, 4),
         fillKey: checkBucket(waterValue)
       }
      }
 
-     // function checkGender(gender) {
-     //   return gender == 'obesityMale';
-     // }
-     // console.log(dataArray.filter(checkGender));
+     // call function makeMap
      makeMap(obj, dataArray);
-     //makeBars(data);
   };
 
-
+/* makeMap makes the map with d3 geo, zooms in on South America and scales it.
+Gets called in getData.
+*/
 function makeMap(obj, dataArray) {
 
     var map = new Datamap({
       element: document.getElementById("container-map"),
       scope: 'world',
+
       // zoom in on South America
       setProjection: function(element) {
         var projection = d3.geo.equirectangular()
@@ -148,13 +142,19 @@ function makeMap(obj, dataArray) {
                       .projection(projection);
         return {path: path, projection: projection};
       },
+
+      // give colors to countries
       fills: {
         defaultFill: 'rgb(255, 255, 255)',
         '90 - 93 %': 'rgb(255, 102, 102)',
         '94 - 96 %': 'rgb(153, 204, 255)',
         '97 - 100 %': 'rgb(153, 153, 255)',
       },
+
+      // use the object data
       data: obj,
+
+      // set tooltip
       geographyConfig: {
             highlightOnHover: false,
             popupTemplate: function(geo, data) {
@@ -165,55 +165,55 @@ function makeMap(obj, dataArray) {
                         '</strong></div>'].join('');
             }
         },
+
+      // on click, make button
       done: function(datamap) {
         datamap.svg
         .selectAll('.datamaps-subunit')
         .on('click', function(d) {
-          var land = d.id;
-          var obesityLand = obj[land]["obesity"];
-          //console.log(obesityLand);
-          //makeBars(dataArray);
           makeButton(dataArray);
         });
       }
     });
 
+    // set legend
     map.legend();
+  };
 
-// close makeMap
-};
-
+/* highlightBar highlights the bar of the country that is hooverd on on the map.
+Gets called in makemap*/
 function highlightBar (iso, data) {
 
+  // fill grey, return original color
   d3.select("#" + iso)
-    // .transition()
-    // .duration(750)
     .attr("fill", "grey")
     .transition(0)
-    //.delay(1000)
     .attr("fill", function(d){
        return giveColor(+d.obesityBoth)
      });
 }
 
-
+/* makeButton makes the button where you can choose which gender to visualize in
+the barchart. Gets called in makeMap when clicked on a country. */
 function makeButton(dataArray) {
 
   // delete existing button
   d3.select('#button').selectAll('select')
     .remove();
 
-    var selectedValue = 'Both Sexes';
-    // make button
-    var select = d3.select("#button").append('select')
+  // set default barchart (through default selectedValue)
+  var selectedValue = 'Both Sexes';
+
+  // make new button
+  var select = d3.select("#button").append('select')
       .attr('class','select')
-      .on('change', onchange);
+      .on('change', onChange);
 
-      // set button (options)
-      var variables = ['Both Sexes', 'Male', 'Female'];
+  // set button variables
+  var variables = ['Both Sexes', 'Male', 'Female'];
 
-      // set button (working)
-      var options = select
+  // make button options
+  var options = select
         .selectAll('option')
         .data(variables)
         .enter()
@@ -222,38 +222,49 @@ function makeButton(dataArray) {
             return d;
           });
 
+  /* onChange gives the selectedValue and calls makeBars with this value.
+  Gets called when any given option is clicked on.*/
+  function onChange() {
 
-          function onchange() {
-            selectedValue = d3.select('select').property('value');
+      selectedValue = d3.select('select').property('value');
+      makeBars(dataArray, selectedValue)
+  }
 
-            makeBars(dataArray, selectedValue)
-          }
+  // make bars, also when button is not yet clicked on.
+  makeBars(dataArray, selectedValue);
+  };
 
-          makeBars(dataArray, selectedValue);
-      };
-
-
+/* makeBars makes the barchart. Gets called in makeButton. */
 function makeBars(dataArray, selectedValue) {
 
+  // remove previous existing barchart
+  d3.select("#container-bar").selectAll("svg")
+    .remove();
 
+  // make an extra array of the different countries (to filter out extra text)
   var countries = [];
   var dataArrays = dataArray;
   var selectedValue = selectedValue;
 
-
   for (var i = 0; i < 13; i++) {
+    if (i == 1){
+      var temp = dataArrays[i]["country"];
+      countries.push(temp.slice(0, 7));
+    }
+    else {
     var temp = dataArrays[i]["country"];
     countries.push(temp.slice(0, 10));
   }
+  };
 
-
-  // set width and height of graph, of svg, set margins, set max value
+  // set width and height of chart, of svg, set margins, set max value
   var width = 300;
   var height = 200;
   var barPadding = 4;
   var heightMargin = 75;
   var widthMargin = 50;
   var maxValue = 25;
+  var countriesLength = countries.length;
 
   // get interactivity(label), give label
   var tip = d3.tip()
@@ -261,18 +272,15 @@ function makeBars(dataArray, selectedValue) {
     .offset([-20,0])
     .html (function (d, i) {
       if ('Both Sexes' == selectedValue){
-      return "<strong>Obesity in %:</strong> <span style='color:black'>" + d.obesityBoth + "</span>"
+      return "<strong>Obesityrate in %:</strong> <span style='color:black'>" + d.obesityBoth + "</span>"
     }
     if ('Male' == selectedValue) {
-      return "<strong>Obesity in %:</strong> <span style='color:black'>" + d.obesityMale + "</span>"
+      return "<strong>Obesityrate in %:</strong> <span style='color:black'>" + d.obesityMale + "</span>"
     }
     if ('Female' == selectedValue) {
-      return "<strong>Obesity in %:</strong> <span style='color:black'>" + d.obesityFemale + "</span>"
+      return "<strong>Obesityrate in %:</strong> <span style='color:black'>" + d.obesityFemale + "</span>"
     }
-  })
-
-  d3.select("#container-bar").selectAll("svg")
-    .remove();
+  });
 
   // make the svg
   var svg = d3.select("#container-bar")
@@ -284,17 +292,17 @@ function makeBars(dataArray, selectedValue) {
   // show tip
   svg.call(tip);
 
-
-  // make x scale (domain is values (0 to 17), range is where x axis begins and ends)
+  // make x scale
   var x = d3.scale.linear()
-                .domain([0, 13])
+                .domain([0, countriesLength])
                 .range([widthMargin, width + widthMargin]);
 
-  // make y scale (domain is values of obesity, range is where y axis begins and ends)
+  // make y scale
   var y = d3.scale.linear()
             .domain([0, maxValue])
             .range([0, height]);
 
+  // scale axis to make sure bars start at the bottom
   var axisScale = d3.scale.linear()
                     .domain([0, maxValue])
                     .range([height, 0]);
@@ -303,16 +311,16 @@ function makeBars(dataArray, selectedValue) {
   var xAxis = d3.svg.axis()
                 .scale(x)
                 .orient("bottom")
-                .ticks(13)
+                .ticks(countriesLength)
                 .tickFormat(function(d, i) {
                    return countries[i];
                  });
 
+  // set y axis according to axisScale
   var yAxis = d3.svg.axis()
                 .scale(axisScale)
                 .orient("left")
                 .ticks(5);
-
 
   // create SVG Barchart
   svg.selectAll(".bar")
@@ -324,7 +332,7 @@ function makeBars(dataArray, selectedValue) {
          return d.countryISO;
        })
        .attr("x", function(d, i) {
-         return i * (width / 13) + widthMargin;
+         return i * (width / countriesLength) + widthMargin;
        })
        .attr("y", function (d){
          if ('Both Sexes' == selectedValue){
@@ -337,7 +345,7 @@ function makeBars(dataArray, selectedValue) {
          return height + heightMargin - y(+d.obesityFemale);
        }
        })
-       .attr("width", width / 13 - barPadding)
+       .attr("width", width / countriesLength - barPadding)
        .attr("height", function(d) {
          if ('Both Sexes' == selectedValue){
           return y(+d.obesityBoth);
@@ -363,7 +371,6 @@ function makeBars(dataArray, selectedValue) {
        .on("mouseover", tip.show)
        .on("mouseout", tip.hide);
 
-
     // create X axis
     svg.append("g")
         .attr("class","axis")
@@ -371,7 +378,7 @@ function makeBars(dataArray, selectedValue) {
         .call(xAxis)
         .selectAll("text")
         .style("text-anchor", "end")
-        .attr("transform", "rotate(-50)")
+        .attr("transform", "rotate(-50)");
 
     // create Y axis
     svg.append("g")
@@ -381,28 +388,38 @@ function makeBars(dataArray, selectedValue) {
         .call(yAxis);
 
 
-        // append yAxis title
-        svg.append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 10)
-            .attr("x", - 185)
-            .attr("dy", "1em")
-            .style("text-anchor", "middle")
+    // append yAxis title
+    svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 7)
+          .attr("x", - 170)
+          .attr("dy", "1em")
+          .style("text-anchor", "middle")
+          .style("font-size", "12px")
+          .style("font-family", "calibri")
+          .style("font-weight", "bold")
+          .text( function (d) {
+            if (selectedValue == 'Both Sexes') {
+              return "Obesity prevelance under children in %"
+            }
+            if (selectedValue == 'Male') {
+              return "Obesity prevelance under boys in %"
+            }
+            if (selectedValue == 'Female') {
+              return "Obesity prevelance under girls in %"
+            }
+          });
+
+      // append xAxis title
+      svg.append("text")
+            .attr("transform", "translate(" + (width / 2) + "," + (height + 145) + ")")
             .style("font-size", "12px")
-            .style("font-family", "calibri")
             .style("font-weight", "bold")
-            .text("Obesity prevelance under children");
+            .style("font-family", "calibri")
+            .style("text-anchor", "middle")
+            .text("Countries in South America");
 
-        // append xAxis title
-        svg.append("text")
-              .attr("transform", "translate(" + (width / 2) + "," + (height + 145) + ")")
-              .style("font-size", "12px")
-              .style("font-weight", "bold")
-              .style("font-family", "calibri")
-              .style("text-anchor", "middle")
-              .text("Countries in South America");
-
-};
+  };
 
 //close window onload
 };

@@ -1,3 +1,12 @@
+/* Code for making a web page, containing linked views.
+By Ellemijke Donner, 10734198.
+This file: drinkingwatersimple.json containing the data concerning water accesability.
+Other files needed:
+  - index.html for webpage design.
+  - stylesheet.css for style of webpage.
+  - obesityfinal.json for data concerning obesity.
+  - watertest.js for javascript code */
+
 {
   "dimension": [
                  {
